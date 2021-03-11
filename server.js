@@ -1,8 +1,12 @@
 // Import dependencies
+const mongoose = require("mongoose");
+const User = require("./model/user");
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+
+//require("dotenv/config");
 
 // Create a new express application named 'app'
 const app = express();
@@ -39,12 +43,64 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
     });
 };
 
+
+mongoose.connect(process.env.DB_CONNECTION_STRING, (req, res) =>{
+    console.log("Connected to db");
+})
+
+var db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function() {
+    console.log("Connection Successful!");
+});
+
+// Configure our server to listen on the port defiend by our port variable
+app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));
+
+app.get("/trivia/getQuestion", (req, res) => {
+
+});
+
+app.get("/trivia/getAnswer", (req, res) => {
+
+});
+
+app.post("/trivia/user/saveAnswer", (req, res) => {
+
+});
+
+app.post("/user/create", async (req, res) => {
+    var newUser = new User(req.body);
+    var result = await newUser.save();
+    res.send(result);
+});
+
+app.get("/user", (req, res) => {
+    res.status(200).json({
+        user: 'user'
+    });
+});
+
+app.post("/trivia/create", (req, res) => {
+
+});
+
+app.get("/user/score", (req, res) => {
+
+});
+
+app.get("/session/leaderboard", (req, res) => {
+
+});
+
+app.post("/user/score", (req, res) => {
+
+});
+
 // Catch any bad requests
+// MUST BE AT END OF FILE
 app.get('*', (req, res) => {
     res.status(200).json({
         msg: 'Catch All'
     });
 });
-
-// Configure our server to listen on the port defiend by our port variable
-app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));
