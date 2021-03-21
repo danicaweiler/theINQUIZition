@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
+import GameHeader from './gameHeader';
 import axios from 'axios'
-
+import MakeQuiz from './makeQuiz';
+import Confetti from './confetti';
+import Rules from './rules';
 class App extends Component {
   state = {
     response: {}
@@ -17,8 +20,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Hello friends!</h1>
-        <h1>{this.state.response.body}</h1>
+        <Confetti />
+        <GameHeader />
+        <div className="game-body">
+          <MakeQuiz />
+        </div>        
+          <Rules />
+       <p>{this.state.response.body}</p>
       </div>
     );
   }
