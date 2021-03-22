@@ -1,3 +1,8 @@
+body {  
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  margin: 0px;
+}
+
 .App {
   text-align: center;
 }
@@ -15,6 +20,24 @@
   border-bottom: 5px solid #463758;
 }
 
+.game-header.alternate {
+  background-color: #5D4D70;
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #F6F6F7;
+  border-bottom: 5px solid #463758;
+}
+
+.game-header.alternate h1 {
+  padding-top: 25px;
+  font-size: calc(16px);
+  text-shadow: 3px 3px #746c7e;
+}
+
 .game-body {
   background-color: #F6F6F7;
   display: flex;
@@ -24,6 +47,14 @@
   font-size: 12px;
   color: black;
   padding: 10px;
+}
+
+.form-body {
+  margin: 25px;
+  width: 90%;
+  border: 3px solid #BD7A80;
+  background-color: #fefef9;
+  border-radius: 15px;
 }
 
 .App-link {
@@ -39,7 +70,6 @@
   display: inline-block;
   font-size: 20px;
   border-radius: 4px;
-  width: 40%;
   margin: 40px 0px 15px 0px;
 }
 

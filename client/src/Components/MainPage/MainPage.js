@@ -16,7 +16,7 @@ function MainPage(props) {
       <div className='game-header'>
         <h1>The InQUIZition</h1>
       </div>
-      <div>
+      <div className="game-body">
         <Link to='/create_quiz'>
           <button className='main-button'>Build Your Own</button>
         </Link>
