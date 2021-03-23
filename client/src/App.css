@@ -44,19 +44,26 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 14px;
   color: black;
   padding: 10px;
 }
 
 .form-body {
-  margin: 25px;
-  width: 90%;
+  margin: 50px;
+  padding: 60px;
   border: 3px solid #BD7A80;
   background-color: #fefef9;
   border-radius: 15px;
+  text-align: left;
+  justify-content: left;
+  width: -webkit-fill-available;
 }
 
+label input {
+  margin: 15px 5px 5px 10px;
+  padding: 5px;
+}
 .App-link {
   color: #BD7A80;
 }
@@ -65,17 +72,16 @@ body {
   background-color: #F08984;
   border: none;
   color: #F6F6F7;
-  padding: 20px 40px;
+  padding: 20px;
   text-align: center;
   display: inline-block;
   font-size: 20px;
   border-radius: 4px;
-  margin: 40px 0px 15px 0px;
+  margin: 10px;
 }
 
 .main-button.alternate {
   background-color: #6DAFCA;
-  margin: 15px 0px 40px 0px;
 }
 
 .main-button:hover {
@@ -87,7 +93,7 @@ body {
 }
 
 div {
-  width: 100%;
+  width: auto;
 }
 
 h1.sub {
@@ -105,4 +111,13 @@ h1.sub {
 p {
   font-size: medium;
   margin: 10px;
+}
+
+.question-input {
+  width: -webkit-fill-available;
+  max-width: 40%;
+}
+
+.question-input.main {
+  max-width: -webkit-fill-available;
 }
