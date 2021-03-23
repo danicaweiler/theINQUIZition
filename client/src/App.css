@@ -121,3 +121,7 @@ p {
 .question-input.main {
   max-width: -webkit-fill-available;
 }
+
+.srv-validation-message {
+  color: #6DAFCA;
+}
