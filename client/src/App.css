@@ -1,4 +1,4 @@
-body {  
+body {
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   margin: 0px;
 }
@@ -8,28 +8,44 @@ body {
 }
 
 .game-header {
-  background-color: #5D4D70;
+  background-color: #5d4d70;
   min-height: 35vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: #F6F6F7;
+  color: #f6f6f7;
   text-shadow: 3px 3px #746c7e;
   border-bottom: 5px solid #463758;
 }
 
 .game-header.alternate {
-  background-color: #5D4D70;
+  background-color: #5d4d70;
   min-height: 20vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: #F6F6F7;
+  color: #f6f6f7;
   border-bottom: 5px solid #463758;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link {
+  color: #f6f6f7;
+}
+
+a:visited {
+  color: #f6f6f7;
+}
+
+a:hover {
+  color: #f6f6f7;
+}
+
+a:active {
+  color: #f6f6f7;
 }
 
 .game-header.alternate h1 {
@@ -39,7 +55,7 @@ body {
 }
 
 .game-body {
-  background-color: #F6F6F7;
+  background-color: #f6f6f7;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,7 +68,7 @@ body {
 .form-body {
   margin: 50px;
   padding: 60px;
-  border: 3px solid #BD7A80;
+  border: 3px solid #bd7a80;
   background-color: #fefef9;
   border-radius: 15px;
   text-align: left;
@@ -65,13 +81,13 @@ label input {
   padding: 5px;
 }
 .App-link {
-  color: #BD7A80;
+  color: #bd7a80;
 }
 
 .main-button {
-  background-color: #F08984;
+  background-color: #f08984;
   border: none;
-  color: #F6F6F7;
+  color: #f6f6f7;
   padding: 20px;
   text-align: center;
   display: inline-block;
@@ -81,11 +97,11 @@ label input {
 }
 
 .main-button.alternate {
-  background-color: #6DAFCA;
+  background-color: #6dafca;
 }
 
 .main-button:hover {
-  background-color: #BD7A80;
+  background-color: #bd7a80;
 }
 
 .main-button.alternate:hover {
@@ -102,9 +118,9 @@ h1.sub {
   align-items: center;
   justify-content: center;
   font-size: 26px;
-  color: #F08984;
+  color: #f08984;
   padding: 10px;
-  border-bottom: 2px solid #BD7A80;
+  border-bottom: 2px solid #bd7a80;
   width: 80%;
 }
 
@@ -123,5 +139,5 @@ p {
 }
 
 .srv-validation-message {
-  color: #6DAFCA;
+  color: #6dafca;
 }
