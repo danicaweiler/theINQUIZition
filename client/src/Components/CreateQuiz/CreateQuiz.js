@@ -1,19 +1,16 @@
 import React from "react";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
-import { withRouter, Route } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 class CreateQuiz extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       questionList: [],
-      questions: [
-        { question: "", answerA: "", answerB: "", answerC: "", answerD: "" },
-      ],
-      username: "",
+      questions: [],
       title: "",
-      sessionId: "",
+      sessionId: "1",
       question: "",
     };
 
@@ -22,9 +19,12 @@ class CreateQuiz extends React.Component {
     this.submitForm = this.submitForm.bind(this);
     this.QuestionInput = this.QuestionInput.bind(this);
     this.setTitle = this.setTitle.bind(this);
-    this.setUsername = this.setUsername.bind(this);
 
     this.setQuestion = this.setQuestion.bind(this);
+    this.setAnswerA = this.setAnswerA.bind(this);
+    this.setAnswerB = this.setAnswerB.bind(this);
+    this.setAnswerC = this.setAnswerC.bind(this);
+    this.setAnswerD = this.setAnswerD.bind(this);
   }
 
   onAddBtnClick() {
@@ -37,6 +37,7 @@ class CreateQuiz extends React.Component {
       answerB: "",
       answerC: "",
       answerD: "",
+      correctAnswer: "A" 
     };
     validQuestions.push(newQuestionBase);
 
@@ -55,14 +56,17 @@ class CreateQuiz extends React.Component {
     if (this.validator.allValid()) {
       alert("You submitted the form and stuff!");
       const data = {
-        title: this.state.title,
-        username: this.state.username,
+        title: this.state.title
       };
+
       //  axios.post("/api/v1/create-quiz").then((res) => {
       //     this.state.sessionId(res.data);
       //   });
-
-      this.props.history.push("/quiz");
+      this.props.history.push({
+        pathname: '/quiz',
+        search:'id=' + this.state.sessionId
+      })
+     // this.props.history.push("/quiz?id=1" + );
     } else {
       this.validator.showMessages();
       this.forceUpdate();
@@ -84,36 +88,41 @@ class CreateQuiz extends React.Component {
         </label>
         <br />
         <label>
-          <input type='radio' id='answerA' name={props} defaultChecked /> A
+          <input type='radio' id='answerA' name={props} onChange={(e) => this.setCorrectAnswer(e, props, "A")} defaultChecked /> A
           <input
             name='A'
+            onChange={(e) => this.setAnswerA(e, props)}
             className='question-input'
             placeholder='Your first answer here'
           />
         </label>
         <br />
         <label>
-          <input type='radio' id='answerB' name={props} /> B
+          <input type='radio' id='answerB' name={props} onChange={(e) => this.setCorrectAnswer(e, props, "B")}/> B
           <input
             name='B'
+            onChange={(e) => this.setAnswerB(e, props)}
             className='question-input'
             placeholder='Your second answer here'
           />
         </label>
         <br />
         <label>
-          <input type='radio' id='answerC' name={props} /> C
+          <input type='radio' id='answerC' name={props}  onChange={(e) => this.setCorrectAnswer(e, props, "C")}/> C
           <input
             name='C'
+            onChange={(e) => this.setAnswerC(e, props)}
             className='question-input'
             placeholder='Your third answer here'
           />
         </label>
         <br />
         <label>
-          <input type='radio' id='answerD' name={props} /> D
+          <input type='radio' id='answerD' name={props}
+            onChange={(e) => this.setCorrectAnswer(e, props, "D")} /> D
           <input
             name='D'
+            onChange={(e) => this.setAnswerD(e, props)}
             className='question-input'
             placeholder='Your fourth answer here'
           />
@@ -126,44 +135,82 @@ class CreateQuiz extends React.Component {
   }
 
   setTitle(e) {
-    this.setState({ title: e.target.value });
-  }
-
-  setUsername(e) {
-    this.setState({ username: e.target.value });
+    this.setState({ title:  e.target.value });
   }
 
   setQuestion(e, props) {
+    var index = Number(props); 
+    var validQuestions = this.state.questions;
+    validQuestions[index -1].question = e.target.value;
+
+    this.setState({
+      questions: validQuestions
+    });
+
     this.setState({ question: e.target.value + props });
+  }
+
+  setAnswerA(e, props) {
+    var index = Number(props);
+    var validQuestions = this.state.questions;
+    validQuestions[index - 1].answerA = e.target.value;
+
+    this.setState({
+      questions: validQuestions,
+    });
+  }
+
+  setAnswerB(e, props) {
+    var index = Number(props); 
+    var validQuestions = this.state.questions;
+    validQuestions[index -1].answerB = e.target.value;
+
+    this.setState({
+      questions: validQuestions,
+    });
+  }
+  
+  setAnswerC(e, props) {
+    var index = Number(props);
+    var validQuestions = this.state.questions;
+    validQuestions[index -1].answerC = e.target.value;
+
+    this.setState({
+      questions: validQuestions,
+    });
+  }
+
+  setAnswerD(e, props) {
+    var index = Number(props);
+    var validQuestions = this.state.questions;
+    validQuestions[index -  1].answerD = e.target.value;
+
+    this.setState({
+      questions: validQuestions,
+    });
+  }
+
+  setCorrectAnswer(e, props, which) {
+    var index = Number(props);
+    var validQuestions = this.state.questions;
+    validQuestions[index - 1].correctAnswer = which;
+
+    this.setState({
+      questions: validQuestions,
+    });
   }
 
   render() {
     return (
       <div id='createQuiz'>
-        <div className='game-header alternate'>
-          <h2>The InQUIZition</h2>
+        <div className='game-header'>
+        <Link to='/'>
+          <h1>The InQUIZition</h1>
+        </Link>
         </div>
-        <div className='game-body'>
+        <div className='game-body alternate'>
           <form className='form-body'>
-            <h2>Build Your Quiz</h2>
-            <div className='form-group'>
-              <label>
-                Username:
-                <input
-                  className='question-input'
-                  onChange={this.setUsername}
-                  value={this.state.username}
-                  type='text'
-                  name='username'
-                />
-                {this.validator.message(
-                  "username",
-                  this.state.username,
-                  "required|min:3|max:40"
-                )}
-              </label>
-            </div>
-            <br />
+            <h1 className="alternate">Build Your Quiz</h1>
             <div className='form-group'>
               <label>
                 Quiz Title:
@@ -180,7 +227,6 @@ class CreateQuiz extends React.Component {
                   "required|min:3|max:120"
                 )}
               </label>
-            </div>
             <br />
             <br />
             <hr />
@@ -190,15 +236,16 @@ class CreateQuiz extends React.Component {
               type='button'
               className='main-button alternate'
               onClick={this.onAddBtnClick}>
-              Add Question
+              Add a Question
             </button>
             <br />
             <button
               type='button'
               className='main-button'
               onClick={this.submitForm}>
-              Create!
+              Done! Make it!
             </button>
+            </div>
           </form>
         </div>
       </div>
