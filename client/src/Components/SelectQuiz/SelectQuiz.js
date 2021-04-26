@@ -26,26 +26,35 @@ function SelectQuiz() {
 }
 
 //Columns defines table headings and properties to be placed into the body
-const columns = [{ heading: 'Select A Quiz', property: 'title' }, { heading: '', property: '' }];
+const columns = [{ heading: 'Select A Quiz', property: 'title' }];
 //Data is the array of objects to be placed into the table
 //Data will actully be a call to the backend
 
-//dd a button column and route it to the specific quiz id
-
 const data = [{ title: 'All About Edward Scissor Hands', quizId: '1234abcd' }, { title: 'Jackson 5', quizId: '1234abcd' }]
 
-const QuizList = ({ columns, data, propertyAsKey }) => 
-    <table className='table'>
+const QuizList = ({ columns, data, propertyAsKey }) => {
+const onPlayClick = (id) => {
+  alert(`Hello, lets play the quiz by id: ${id}!`);
+};
+return (<table className='table'>
         <thead>
             <tr>{columns.map(col => <th key={`header-${col.heading}`}>{col.heading}</th>)}</tr>
         </thead>
         <tbody>
             {data.map(item =>
                 <tr key={`${item[propertyAsKey]}-row`}>
-                    {columns.map(col => <td key={`${item[propertyAsKey]}-${col.property}`}>{item[col.property]}</td>)}
-                </tr>
+                    {columns.map((col) => (
+                    <td key={`${item[propertyAsKey]}-${col.property}`}>
+                      {item[col.property]}
+                    <br />
+                    <button type='button' id={item.quizId} onClick={() => {
+                        onPlayClick(item.quizId);
+                      }}>Play!</button>
+                </td>))}
+              </tr>
             )}
         </tbody>
-    </table>
+    </table>);
+};
 
 export default SelectQuiz;
