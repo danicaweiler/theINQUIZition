@@ -6,6 +6,7 @@ import CreateQuiz from "./Components/CreateQuiz/CreateQuiz";
 import SelectQuiz from "./Components/SelectQuiz/SelectQuiz";
 import Quiz from "./Components/Quiz/Quiz";
 import QuizSession from "./Components/Quiz/QuizSession";
+import Question from "./Components/Quiz/Question";
 import "./App.css";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path='/select_quiz' exact component={() => <SelectQuiz />} />
           <Route path='/quiz' exact component={() => <Quiz />} />
           <Route path='/quiz_session' exact component={() => <QuizSession />} />
+          <Route path='/question' exact component={() => <Question />} />
         </Switch>
       </Router>
 
