@@ -1,12 +1,10 @@
 // Import dependencies
-const mongoose = require("mongoose");
-const User = require("./model/user");
+const mongoose = require("./mongoose");
+const quizController = require('./controllers/quizController');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-
-//require("dotenv/config");
 
 // Create a new express application named 'app'
 const app = express();
@@ -31,8 +29,10 @@ app.use(cors());
 
 // Require Route
 const api = require('./routes/routes');
+
 // Configure app to use route
 app.use('/api/v1/', api);
+app.use('/create-quiz', quizController.createQuiz);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
@@ -42,11 +42,6 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
         res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
     });
 };
-
-
-mongoose.connect(process.env.DB_CONNECTION_STRING, (req, res) =>{
-    console.log("Connected to db");
-})
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -58,7 +53,7 @@ db.once("open", function() {
 app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));
 
 app.get("/trivia/getQuestion", (req, res) => {
-
+    
 });
 
 app.get("/trivia/getAnswer", (req, res) => {
@@ -79,10 +74,6 @@ app.get("/user", (req, res) => {
     res.status(200).json({
         user: 'user'
     });
-});
-
-app.post("/trivia/create", (req, res) => {
-
 });
 
 app.get("/user/score", (req, res) => {

@@ -56,17 +56,17 @@ class CreateQuiz extends React.Component {
     if (this.validator.allValid()) {
       alert("You submitted the form and stuff!");
       const data = {
-        title: this.state.title
+        title: this.state.title,
+        questions: this.state.questions
       };
-
-      //  axios.post("/api/v1/create-quiz").then((res) => {
-      //     this.state.sessionId(res.data);
-      //   });
+      axios.post("/api/v1/create-quiz", data).then((res) => {
+         this.state.sessionId = res.data;
+      });
       this.props.history.push({
         pathname: '/quiz',
         search:'id=' + this.state.sessionId
       })
-     // this.props.history.push("/quiz?id=1" + );
+      this.props.history.push("/quiz?id=" + this.state.sessionId);
     } else {
       this.validator.showMessages();
       this.forceUpdate();
