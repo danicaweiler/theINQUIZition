@@ -32,7 +32,8 @@ function QuizSession() {
   ];
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
-
+  const [score, setScore] = useState(0);
+  const [showScore, setShowScore] = useState(true);
   const handleAnswerOptionClick = (isCorrect) => {
     if (isCorrect) {
       setScore(score + 1);
