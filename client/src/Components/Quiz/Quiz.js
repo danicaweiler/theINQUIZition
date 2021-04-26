@@ -22,9 +22,11 @@ function Quiz() {
             />
           </label>
           <br />
-          <button type='button' className='main-button'>
-            Start!
-          </button>
+          <Link to='/quiz_session'>
+            <button type='button' className='main-button'>
+              Start!
+            </button>
+          </Link>
         </div>
       </div>
     </div>
