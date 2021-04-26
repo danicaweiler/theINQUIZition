@@ -10,6 +10,7 @@ position: absolute;
 left: 50%;
 animation: confetti 5s ease-in-out -2s infinite;
 transform-origin: left top;
+margin-top: -70px;
 }
 .confetti:nth-child(1) {
 background-color: #f2d74e; left: 10%; animation-delay: 0;

@@ -30,11 +30,11 @@ function App() {
           <Route path='/quiz_session' exact component={() => <QuizSession />} />
         </Switch>
       </Router>
-      <hr />
-      <h4>Server response for testing</h4>
-      <p>{response.body}</p>
+
     </div>
   );
 }
-
+    //  <hr />
+   //   <h4>Server response for testing</h4>
+   //   <p>{response.body}</p>
 export default App;
