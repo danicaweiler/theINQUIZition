@@ -1,6 +1,8 @@
 //const mongoose = require("../mongoose");
 const Quiz = require("../model/quiz");
 const Question = require("../model/question");
+const User = require("../model/user");
+
 const { v4: uuidv4 } = require("uuid");
 
 const saySomething = (req, res, next) => {
@@ -36,7 +38,61 @@ const createQuiz = async (req, res, next) => {
     });
 };
 
+const createUser = async(req, res) => {
+    var newUser = await User.create({
+        "quizID": "",
+        "sessionID": "", 
+        "displayName" : req.username,
+        "score": 0
+    });
+    res.status(201).json({
+        body: {
+            "userID": newUser.id,
+            "sessionID": null
+        }
+    });
+}
+
+const getUser = async(req, res) => {
+    // What is purpose of this route?
+}
+
+const getQuestion = async(req, res) => {
+    await User.findOne({ sessionID : req.body.sessionID }, async function (err, user) {
+        await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
+            res.status(200).json({
+                body: {
+                    "question": question.question,
+                    "answers": [
+                        question.A,
+                        question.B,
+                        question.C,
+                        question.D
+                    ]
+                }
+            });
+        });
+    });
+};
+
+const getAnswer = async(req, res) => {
+    await User.findOne({ sessionID : req.body.sessionID }, async function (err, user) {
+        await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
+            res.status(200).json({
+                body: {
+                    "question": question.question,
+                    "answer": question.correctAnswer
+                }
+            });
+        });
+    });
+};
+
 module.exports = {
     saySomething,
-    createQuiz
+    createQuiz,
+    createUser,
+    getUser,
+    getQuestion,
+    getAnswer
 };

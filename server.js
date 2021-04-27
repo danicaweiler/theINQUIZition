@@ -33,6 +33,8 @@ const api = require('./routes/routes');
 // Configure app to use route
 app.use('/api/v1/', api);
 app.use('/create-quiz', quizController.createQuiz);
+app.use('/get-question', quizController.getQuestion);
+app.use('/get-answer', quizController.getAnswer);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
