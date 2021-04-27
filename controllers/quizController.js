@@ -89,16 +89,16 @@ const getQuestion = async(req, res) => {
                     ],
                     "b": [
                         question.B,
-                        (question.correctAnswer == "A" ? true : false)
+                        (question.correctAnswer == "B" ? true : false)
                     ],
                     "c":
                         [
                         question.C,
-                        (question.correctAnswer = "A" ? true : false)
+                        (question.correctAnswer = "C" ? true : false)
                     ],
                     "d": [
                         question.D,
-                        (question.correctAnswer = "A"? true : false)
+                        (question.correctAnswer = "D"? true : false)
                     ]
                 }
             });
