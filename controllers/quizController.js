@@ -34,7 +34,7 @@ const createQuiz = async (req, res, next) => {
     }
 
     res.status(200).json({
-        body: uuidv4()
+        sessionID: uuidv4()
     });
 };
 
@@ -76,12 +76,29 @@ const getQuestion = async(req, res) => {
 };
 
 const getAnswer = async(req, res) => {
-    await User.findOne({ sessionID : req.body.sessionID }, async function (err, user) {
+    await User.findOne({ sessionID: req.body.sessionID }, async function (err, user) {
         await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
             res.status(200).json({
                 body: {
                     "question": question.question,
                     "answer": question.correctAnswer
+                }
+            });
+        });
+    });
+};
+
+const saveAnswer = async(req, res) => {
+    await User.findOne({ sessionID : req.body.sessionID }, async function (err, user) {
+        await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, async function (err, question) {
+            if (question.correctAnswer == req.body.answer)
+            {
+                user.score = user.score + req.body.score;
+                await user.save();
+            }
+            res.status(200).json({
+                body: {
+                    "score": user.score
                 }
             });
         });
@@ -94,5 +111,6 @@ module.exports = {
     createUser,
     getUser,
     getQuestion,
-    getAnswer
+    getAnswer,
+    saveAnswer
 };
