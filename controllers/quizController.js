@@ -18,16 +18,16 @@ const createQuiz = async (req, res, next) => {
 
     for (var i = 0; i < req.body.questions.length; i++)
     {
-        var newQuestion = req.body.questions[i];
-        var question = await Question.create({
+        var currQuestion = req.body.questions[i];
+        var newQuestion = await Question.create({
             quizID: quiz.id,
             questionNum: i + 1,
-            question: newQuestion.question,
-            A: newQuestion.answerA,
-            B: newQuestion.answerB,
-            C: newQuestion.answerC,
-            D: newQuestion.answerD,
-            correctAnswer: newQuestion.correctAnswer
+            question: currQuestion.question,
+            A: currQuestion.answerA,
+            B: currQuestion.answerB,
+            C: currQuestion.answerC,
+            D: currQuestion.answerD,
+            correctAnswer: currQuestion.correctAnswer
         });
     }
 
@@ -49,9 +49,17 @@ const createUser = async(req, res) => {
     });
 }
 
-const getUser = async(req, res) => {
-    // What is purpose of this route?
-}
+const getQuiz = async(req, res) => {
+    console.log(req.body.quizID);
+    await Quiz.findOne({ _id : req.body.quizID }), async function (err, quiz) {
+        res.status(200).json({
+            body: {
+                "title": quiz.title
+            }
+        });
+    };
+};
+
 
 const getScore = async(req, res) => {
     await User.findOne({ _id : req.body.userID }, async function (err, user) {
@@ -133,7 +141,7 @@ module.exports = {
     saySomething,
     createQuiz,
     createUser,
-    getUser,
+    getQuiz,
     getScore,
     getQuestion,
     getAnswer,
