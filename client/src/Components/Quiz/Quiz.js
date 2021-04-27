@@ -7,7 +7,7 @@ function Quiz(props) {
   const quizId = qs.parse(props.location.search, { ignoreQueryPrefix: true }).id;
   const [leaderboard, setLeaderboard] = useState([]);
   const [title, setTitle] = useState("Loading...");
-  const refText=useRef(textInputRef);
+  const refText=useRef(null);
 
   //Leaderboard
   useEffect(() => {
@@ -20,7 +20,7 @@ function Quiz(props) {
         setLeaderboard(res.data.body)
       });
     })()
-  }, [])
+  }, [quizId])
 
   //Title
   useEffect(() => {
@@ -69,7 +69,7 @@ function Quiz(props) {
             <input
               type='text'
               name='username'
-              ref={textInputRef}
+              ref={refText}
             />
             <br />
           </label>
@@ -78,9 +78,10 @@ function Quiz(props) {
           }>
             <button type='button' className='main-button' onClick={() => {
               const name = refText.current.value;
+              console.log('Name: ' + name);
               const data = {
-                displayName: "Get from the textbox",
-                quizId: quizId
+                username: "Get from the textbox",
+                quizID: quizId
               };
               axios.post("/api/v1/create-user", data).then((res) => {
                 localStorage.setItem('UserID', res.data.body.userID);

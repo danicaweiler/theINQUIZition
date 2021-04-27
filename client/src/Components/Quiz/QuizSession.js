@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter, Link, Redirect } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 var qs = require('qs');
 
@@ -10,7 +10,7 @@ function QuizSession(props) {
     <div className='confetti' key={nums} />
   ));
 
-  const [quizId, setQuizId] = useState(qs.parse(props.location.search, { ignoreQueryPrefix: true }).id); //props.location.search;
+  const quizId = useState(qs.parse(props.location.search, { ignoreQueryPrefix: true }).id); //props.location.search;
   const [question, setQuestion] = useState({
     body: {
       question: "Loading...", a: ["", false], b: ["", true], c: ["", false], d: ["", false]

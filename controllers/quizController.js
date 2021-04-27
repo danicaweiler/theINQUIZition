@@ -2,17 +2,6 @@ const Quiz = require("../model/quiz");
 const Question = require("../model/question");
 const User = require("../model/user");
 
-const querystring = require('querystring');
-
-const { v4: uuidv4 } = require("uuid");
-const { get } = require("../routes/routes");
-
-const saySomething = (req, res, next) => {
-    res.status(200).json({
-        body: 'Hello from the server!'
-    });
-};
-
 const createQuiz = async (req, res, next) => {
     const quiz = await Quiz.create({
         title: req.body.title,
@@ -141,7 +130,7 @@ const saveAnswer = async(req, res) => {
             {
                 user.score = user.score + req.body.score;
                 await user.save();
-            }
+            };
             res.status(200).json({
                 body: {
                     "score": user.score
@@ -165,7 +154,6 @@ const getLeaderboard = async(req, res) => {
 };
 
 module.exports = {
-    saySomething,
     createQuiz,
     createUser,
     getQuiz,
