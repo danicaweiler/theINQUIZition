@@ -50,7 +50,7 @@ const createUser = async(req, res) => {
 }
 
 const getQuiz = async(req, res) => {
-    await Quiz.findById(req.body.quizID, async function (err, quiz) {
+    await Quiz.findById(req.body.quizID, function (err, quiz) {
         res.status(200).json({
             body: {
                 "title": quiz.title
@@ -61,17 +61,17 @@ const getQuiz = async(req, res) => {
 
 
 const getScore = async(req, res) => {
-    await User.findOne({ _id : req.body.userID }, async function (err, user) {
+    await User.findOne({ _id : req.body.userID }, function (err, user) {
         res.status(200).json({
             body: {
                 "score": user.score
             }
         });
     });
-}
+};
 
 const getQuestion = async(req, res) => {
-    await Question.findOne({ quizID: req.body.quizID, questionNum: req.body.Number }, function (err, question) {
+    await Question.findOne({ quizID: req.query.quizID, questionNum: req.query.Number }, function (err, question) {
         if (question == null)
         {
             res.status(400).json({
@@ -85,20 +85,20 @@ const getQuestion = async(req, res) => {
                     "question": question.question,
                     "a": [
                         question.A,
-                        (question.A == question.correctAnswer ? true : false)
+                        (question.correctAnswer == "A" ? true : false)
                     ],
                     "b": [
                         question.B,
-                        (question.B == question.correctAnswer ? true : false)
+                        (question.correctAnswer == "A" ? true : false)
                     ],
                     "c":
                         [
                         question.C,
-                        (question.C == question.correctAnswer ? true : false)
+                        (question.correctAnswer = "A" ? true : false)
                     ],
                     "d": [
                         question.D,
-                        (question.D == question.correctAnswer ? true : false)
+                        (question.correctAnswer = "A"? true : false)
                     ]
                 }
             });
