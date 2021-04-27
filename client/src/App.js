@@ -8,18 +8,9 @@ import Quiz from "./Components/Quiz/Quiz";
 import QuizSession from "./Components/Quiz/QuizSession";
 import Question from "./Components/Quiz/Question";
 import "./App.css";
+import "./confetti.css";
 
 function App() {
-  //TEMP WILL NEED TO BE MOVED INTO IT'S OWN FILE with useEffect
-  const [response, setResponse] = useState([]);
-
-  //This will get the reponse from the server when the component loads
-  // useEffect(() => {
-  //   axios.get("/api/v1/say-something").then((res) => {
-  //     setResponse(res.data);
-  //   });
-  // }, []);
-
   return (
     <div className='App'>
       <Router>
@@ -36,7 +27,5 @@ function App() {
     </div>
   );
 }
-    //  <hr />
-   //   <h4>Server response for testing</h4>
-   //   <p>{response.body}</p>
+
 export default App;

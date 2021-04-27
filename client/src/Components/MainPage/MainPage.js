@@ -1,8 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 
-import "./confetti.css";
-
 function MainPage(props) {
   //set the amount of confetti
   const numConfetti = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];

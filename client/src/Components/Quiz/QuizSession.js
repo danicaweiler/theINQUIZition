@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Link, Redirect } from "react-router-dom";
 import axios from "axios";
-
 var qs = require('qs');
 
 function QuizSession(props) {
+  //set the amount of confetti
+  const numConfetti = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+  const confettiArray = numConfetti.map((nums) => (
+    <div className='confetti' key={nums} />
+  ));
+
   const [quizId, setQuizId] = useState(qs.parse(props.location.search, { ignoreQueryPrefix: true }).id); //props.location.search;
   const [question, setQuestion] = useState({
     body: {
-      question: "Loading...", a: ["Answer A", false], b: ["Answer B", true], c: ["Answer C", false], d: ["Answer D", false]
+      question: "Loading...", a: ["", false], b: ["", true], c: ["", false], d: ["", false]
     }
   });
 
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
   const [score, setScore] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
+
 
   useEffect(() => {
     try {
@@ -33,11 +39,23 @@ function QuizSession(props) {
     }
   }, [])
 
-  const handleAnswerOptionClick = (isCorrect) => {
-    if (isCorrect) {
-      setScore(score + 1);
-    }
+  const handleAnswerOptionClick = (answer) => {
 
+    const data = {
+      userID: localStorage.getItem("UserID"),
+      quizID: quizId,
+      Number: currentQuestionNumber,
+      answer: answer,
+      score: 10
+    };
+
+    (async () => {
+      await axios.post('/api/v1/save-answer', data
+      ).then((res) => {
+         setScore({ sessionId: res.data.score })
+        });
+    })()
+    
     const nextQuestion = currentQuestionNumber + 1;
     const res = axios.get('/api/v1/getQuestion', {
       params: {
@@ -53,18 +71,6 @@ function QuizSession(props) {
       .catch((error) => {
         setIsEnd(true);
       })
-      .finally(() => {
-        if (isEnd == true) {
-          handleEnd();
-        }
-      });
-
-  };
-
-  const handleEnd = () => {
-    <Redirect to={
-      "quiz?id=" + quizId 
-        } />
   };
 
 
@@ -77,36 +83,47 @@ function QuizSession(props) {
       </div>
       <div className='game-body alternate' >
         <div className='form-body'>
-          <div className='score-section'>
-            Your score is {score}
-          </div>
-          <div className='question-section answer-section'>
-            <div className="question-input main question">
-              <span>Question {currentQuestionNumber}</span>
+          {isEnd ? (
+            <div className='score-section'>
+              <p>Your score is {score}</p>
+              <div className='confetti-container'>{confettiArray}</div>
+              <Link to={'quiz?id=' + quizId}>
+                <button type='button' className="main-button alternate" id="Back" onClick= {() => {
+              
+                }}>Go To Leaderboard</button>
+              </Link>
             </div>
-            <label>
-              <p className="question-input main question">{question.body.question}</p>
-            </label>
-          </div>
-          <div className='answer-section'>
-            <button className="answer main-button"
-              onClick={() => handleAnswerOptionClick(question.body.a[1])}>
-              {question.body.a[0]}
-            </button>
-            <button className="answer main-button"
-              onClick={() => handleAnswerOptionClick(question.body.b[1])}>
-              {question.body.b[0]}
-            </button>
-            <br />
-            <button className="answer main-button"
-              onClick={() => handleAnswerOptionClick(question.body.c[1])}>
-              {question.body.c[0]}
-            </button>
-            <button className="answer main-button"
-              onClick={() => handleAnswerOptionClick(question.body.d[1])}>
-              {question.body.d[0]}
-            </button>
-          </div>
+          ) : (
+            <>
+              <div className='question-section answer-section'>
+                <div className="question-input main question">
+                  <span>Question {currentQuestionNumber}</span>
+                </div>
+                <label>
+                  <p className="question-input main question">{question.body.question}</p>
+                </label>
+              </div>
+              <div className='answer-section'>
+                <button className="answer main-button"
+                  onClick={() => handleAnswerOptionClick("A")}>
+                  {question.body.a[0]}
+                </button>
+                <button className="answer main-button"
+                  onClick={() => handleAnswerOptionClick("B")}>
+                  {question.body.b[0]}
+                </button>
+                <br />
+                <button className="answer main-button"
+                  onClick={() => handleAnswerOptionClick("C")}>
+                  {question.body.c[0]}
+                </button>
+                <button className="answer main-button"
+                  onClick={() => handleAnswerOptionClick("D")}>
+                  {question.body.d[0]}
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

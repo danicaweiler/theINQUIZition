@@ -7,18 +7,15 @@ import { Link } from "react-router-dom";
 const columns = [{ heading: 'Select A Quiz', property: 'title' }];
 
 function SelectQuiz() {
-  const [data, setData] = useState([]);// [{ title: 'All About Edward Scissor Hands', quizId: '1234abcd' }, { title: 'Jackson 5', quizId: '1234abcd' }]
-
+  const [data, setData] = useState( [{ title: 'Loading...', quizId: 'abcd' }]);
+  
   useEffect(() => {
-    try {
-      const res = axios.get('/api/v1/get-all-quizzes').then((res) => {
-        setData(res.data)
-        console.log(res.data);
-      });;
-    } catch (err) {
-      // Handle Error Here
-      console.error(err);
-    }
+    (async () => {
+      await axios.get('/api/v1/get-all-quizzes').then((res) => {
+        console.log(res)
+         setData(res.data.body.quizzes)
+        });
+    })()
   }, [])
 
   return (
@@ -45,11 +42,6 @@ function SelectQuiz() {
 }
 
 const QuizList = ({ columns, data, propertyAsKey }) => {
-
-  const onPlayClick = (id) => {
-    alert(`Hello, lets play the quiz by id: ${id}!`);
-  }
-
   return (<table className='table'>
     <thead>
       <tr>{columns.map(col => <th key={`header-${col.heading}`}>{col.heading}</th>)}</tr>
@@ -62,11 +54,9 @@ const QuizList = ({ columns, data, propertyAsKey }) => {
               {item[col.property]}
               <br />
               <Link to={
-                'quiz?id=' + item.quizId
+                'quiz?id=' + item._id
               }>
-                <button type='button' id={item.quizId} onClick={() => {
-                  onPlayClick(item.quizId);
-                }}>Play!</button></Link>
+                <button type='button' id={item._id}>Play!</button></Link>
             </td>))}
         </tr>
       )}

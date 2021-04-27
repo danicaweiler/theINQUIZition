@@ -1,37 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { Link, withRouter, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 var qs = require('qs');
 
 function Quiz(props) {
-const quizId = qs.parse(props.location.search, { ignoreQueryPrefix: true }).id;
-const [leaderboard, setLeaderboard] = useState([]);
-const [title, setTitle] = useState("");
-//Leaderboard
-useEffect(() => {
-  (async () => {
-    await axios.get('/api/v1/get-leaderboard', {
-      params: {
-        quizID: quizId
-      }
-    }).then((res) => {
-       setLeaderboard(res.data.body)
+  const quizId = qs.parse(props.location.search, { ignoreQueryPrefix: true }).id;
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [title, setTitle] = useState("Loading...");
+  const refText=useRef(textInputRef);
+
+  //Leaderboard
+  useEffect(() => {
+    (async () => {
+      await axios.get('/api/v1/get-leaderboard', {
+        params: {
+          quizID: quizId
+        }
+      }).then((res) => {
+        setLeaderboard(res.data.body)
       });
-  })()
-}, [])
-//Title
-useEffect(() => {
-  (async () => {
-    await axios.get('/api/v1/get-quiz', {
-      params: {
-        quizID: quizId
-      }
-    }).then((res) => {
-      console.log(res)
-       setTitle(res.data.body.title)
+    })()
+  }, [])
+
+  //Title
+  useEffect(() => {
+    (async () => {
+      await axios.get('/api/v1/get-quiz', {
+        params: {
+          quizID: quizId
+        }
+      }).then((res) => {
+        console.log(res)
+        setTitle(res.data.title)
       });
-  })()
-}, [])
+    })()
+  }, [])
+
   return (
     <div id='quiz'>
       <div className='game-header'>
@@ -49,10 +53,10 @@ useEffect(() => {
               className='question-input' //populate from quizId
               type='text'
               name='share-link'
-              value= {'theinquizition.herokuapp.com/quiz?id=' + quizId}
+              value={'theinquizition.herokuapp.com/quiz?id=' + quizId}
               onClick={() => {
                 navigator.clipboard.writeText('theinquizition.herokuapp.com/quiz?id=' + quizId);
-               }}
+              }}
               readOnly
             />
           </label>
@@ -62,26 +66,27 @@ useEffect(() => {
           <br />
           <label>
             <p>Enter your name:</p>
-          <input
+            <input
               type='text'
               name='username'
+              ref={textInputRef}
             />
-            <br/>
+            <br />
           </label>
-          <Link to= {
-                      '/quiz_session?id=' + quizId
-                    }>  
-          <button type='button' className='main-button' onClick={() => 
-          {      
-            const data = {
-              displayName: "Get from the textbox",
-              quizId: quizId
-            };
-            axios.post("/api/v1/createUser", data).then((res) => {
-              localStorage.setItem('user', res.data);
-            });
-        }}>
-            Let's Play!
+          <Link to={
+            '/quiz_session?id=' + quizId
+          }>
+            <button type='button' className='main-button' onClick={() => {
+              const name = refText.current.value;
+              const data = {
+                displayName: "Get from the textbox",
+                quizId: quizId
+              };
+              axios.post("/api/v1/create-user", data).then((res) => {
+                localStorage.setItem('UserID', res.data.body.userID);
+              });
+            }}>
+              Let's Play!
           </button></Link>
           <br />
           <br />
@@ -91,7 +96,7 @@ useEffect(() => {
           <Leaderboard
             columns={columns}
             data={
-               leaderboard.length > 0? leaderboard : [ {username: "", score: 0} ]
+              leaderboard.length > 0 ? leaderboard : [{ username: "", score: 0 }]
             }
             propertyAsKey='username' //The data property to be used as a key
           />
