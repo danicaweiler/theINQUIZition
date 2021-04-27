@@ -21,24 +21,32 @@ const createQuiz = async (req, res, next) => {
         var newQuestion = req.body.questions[i];
         var question = await Question.create({
             quizID: quiz.id,
-            questionNum: i + 1,
+            questionNum: i,
             question: newQuestion.question,
             A: [
-                newQuestion.A[0],
-                newQuestion.A[1]
+                {
+                    answerText: newQuestion.answerA,
+                    isCorrect: newQuestion.isCorrect
+                }
             ],
             B: [
-                newQuestion.B[0],
-                newQuestion.B[1]
+                {
+                    answerText: newQuestion.answerA,
+                    isCorrect: newQuestion.isCorrect
+                }
             ],
             C: [
-                newQuestion.C[0],
-                newQuestion.C[1]
+                {
+                    answerText: newQuestion.answerA,
+                    isCorrect: newQuestion.isCorrect
+                }
             ],
             D: [
-                newQuestion.D[0],
-                newQuestion.D[1]
-            ],
+                {
+                    answerText: newQuestion.answerA,
+                    isCorrect: newQuestion.isCorrect
+                }
+            ] 
         });
     }
 
@@ -75,7 +83,7 @@ const getScore = async(req, res) => {
 }
 
 const getQuestion = async(req, res) => {
-    await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
+    await Question.findOne({ quizID: req.body.quizID, questionNum: req.body.Number }, function (err, question) {
         res.status(200).json({
             body: {
                 "question": question.question,
@@ -91,7 +99,7 @@ const getQuestion = async(req, res) => {
 };
 
 const getAnswer = async(req, res) => {
-    await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
+    await Question.findOne({ quizID: req.body.quizID, questionNum: req.body.Number }, function (err, question) {
         res.status(200).json({
             body: {
                 "question": question.question,
@@ -102,7 +110,7 @@ const getAnswer = async(req, res) => {
 };
 
 const saveAnswer = async(req, res) => {
-    await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, async function (err, question) {
+    await Question.findOne({ quizID: req.body.quizID, questionNum: req.body.Number }, async function (err, question) {
         if (question.correctAnswer == req.body.answer)
         {
             user.score = user.score + req.body.score;
