@@ -68,7 +68,7 @@ const getAllQuizzes = async(req, res) => {
 
 
 const getScore = async(req, res) => {
-    await User.ById(req.query.userID, function (err, user) {
+    await User.findById(req.query.userID, function (err, user) {
         res.status(200).json({
             body: {
                 "score": user.score
