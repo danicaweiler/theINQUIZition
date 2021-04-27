@@ -2,8 +2,6 @@ const Quiz = require("../model/quiz");
 const Question = require("../model/question");
 const User = require("../model/user");
 
-const { v4: uuidv4 } = require("uuid");
-
 const saySomething = (req, res, next) => {
     res.status(200).json({
         body: 'Hello from the server!'
@@ -54,6 +52,16 @@ const getQuiz = async(req, res) => {
         res.status(200).json({
             body: {
                 "title": quiz.title
+            }
+        });
+    });
+};
+
+const getAllQuizzes = async(req, res) => {
+    await Quiz.find({}, { title: 1}, function (err, quizzes) {
+        res.status(200).json({
+            body: {
+                quizzes
             }
         });
     });
@@ -150,6 +158,7 @@ module.exports = {
     createQuiz,
     createUser,
     getQuiz,
+    getAllQuizzes,
     getScore,
     getQuestion,
     getAnswer,

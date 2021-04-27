@@ -36,6 +36,7 @@ app.use('/api/v1/', api);
 // These lines are to emulate route usage from direct requests by Postman during testing
 app.use('/create-quiz', quizController.createQuiz);
 app.use('/get-quiz', quizController.getQuiz);
+app.use('/get-all-quizzes', quizController.getAllQuizzes);
 app.use('/get-score', quizController.getScore);
 app.use('/get-question', quizController.getQuestion);
 app.use('/get-answer', quizController.getAnswer);
