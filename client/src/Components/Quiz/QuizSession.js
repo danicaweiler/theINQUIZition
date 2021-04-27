@@ -30,9 +30,8 @@ function QuizSession(props) {
           "Number": currentQuestionNumber
         }
       }).then((res) => {
-        setQuestion(res.data)
-        console.log(res.data);
-      });;
+        setQuestion(res.data);
+      });
     } catch (err) {
       // Handle Error Here
       console.error(err);
@@ -52,7 +51,8 @@ function QuizSession(props) {
     (async () => {
       await axios.post('/api/v1/save-answer', data
       ).then((res) => {
-         setScore({ sessionId: res.data.score })
+        console.log(res.data.body.score);
+        setScore(res.data.body.score)
         });
     })()
     

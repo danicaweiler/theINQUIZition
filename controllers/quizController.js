@@ -52,7 +52,6 @@ const getQuiz = async(req, res) => {
 
 const getAllQuizzes = async(req, res) => {
     await Quiz.find({}, { title: 1}, function (err, quizzes) {
-        console.log(quizzes)
         res.status(200).json({
             body: {
                 quizzes
@@ -73,9 +72,7 @@ const getScore = async(req, res) => {
 };
 
 const getQuestion = async(req, res) => {
-    console.log("NUMBER: " + req.query.Number); 
 
-    console.log("ID: " + req.query.quizID); 
     await Question.findOne({ quizID: req.query.quizID, questionNum: req.query.Number }, function (err, question) {
 
         if (question == null)
@@ -141,7 +138,7 @@ const saveAnswer = async(req, res) => {
 };
 
 const getLeaderboard = async(req, res) => {
-    await User.find({ quizID: req.body.quizID }, async function (err, users) {
+    await User.find({ quizID: req.query.quizID }, async function (err, users) {
         var body = {};
         body.users = [];
         users.forEach(function(user) {

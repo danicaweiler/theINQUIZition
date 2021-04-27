@@ -63,7 +63,6 @@ class CreateQuiz extends React.Component {
         await axios.post('/api/v1/create-quiz', data
         ).then((res) => {
            this.setState({ sessionId: res.data.sessionID })
-           console.log(res.data);
 
            this.props.history.push({
             pathname: '/quiz',

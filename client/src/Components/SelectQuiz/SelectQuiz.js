@@ -12,7 +12,6 @@ function SelectQuiz() {
   useEffect(() => {
     (async () => {
       await axios.get('/api/v1/get-all-quizzes').then((res) => {
-        console.log(res)
          setData(res.data.body.quizzes)
         });
     })()

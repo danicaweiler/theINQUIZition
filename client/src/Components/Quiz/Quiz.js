@@ -17,10 +17,12 @@ function Quiz(props) {
           quizID: quizId
         }
       }).then((res) => {
-        setLeaderboard(res.data.body)
+        console.log(res.data)
+        setLeaderboard(res.data.body.users)
+        console.log(leaderboard)
       });
     })()
-  }, [quizId])
+  }, [])
 
   //Title
   useEffect(() => {
@@ -30,8 +32,7 @@ function Quiz(props) {
           quizID: quizId
         }
       }).then((res) => {
-        console.log(res)
-        setTitle(res.data.title)
+        setTitle(res.data.body.title)
       });
     })()
   }, [])
@@ -53,7 +54,7 @@ function Quiz(props) {
               className='question-input' //populate from quizId
               type='text'
               name='share-link'
-              value={'theinquizition.herokuapp.com/quiz?id=' + quizId}
+              value={'theinquizition.herokuapp.com/quiz?id=' + quizId }
               onClick={() => {
                 navigator.clipboard.writeText('theinquizition.herokuapp.com/quiz?id=' + quizId);
               }}
@@ -78,9 +79,8 @@ function Quiz(props) {
           }>
             <button type='button' className='main-button' onClick={() => {
               const name = refText.current.value;
-              console.log('Name: ' + name);
               const data = {
-                username: "Get from the textbox",
+                username: name,
                 quizID: quizId
               };
               axios.post("/api/v1/create-user", data).then((res) => {
