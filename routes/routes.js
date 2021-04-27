@@ -9,5 +9,6 @@ router.get('/get-user', quizController.getUser);
 router.get('/get-question', quizController.getQuestion);
 router.get('/get-answer', quizController.getAnswer);
 router.get('/save-answer', quizController.saveAnswer);
+router.get('/get-leaderboard', quizController.getLeaderboard);
 
 module.exports = router;

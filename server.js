@@ -36,6 +36,7 @@ app.use('/create-quiz', quizController.createQuiz);
 app.use('/get-question', quizController.getQuestion);
 app.use('/get-answer', quizController.getAnswer);
 app.use('/save-answer', quizController.saveAnswer);
+app.use('/get-leaderboard', quizController.getLeaderboard);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {

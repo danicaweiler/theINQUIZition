@@ -17,7 +17,6 @@ const createQuiz = async (req, res, next) => {
         category: "General Trivia"
     });
 
-    console.log(req.body.questions);
     for (var i = 0; i < req.body.questions.length; i++)
     {
         var newQuestion = req.body.questions[i];
@@ -105,6 +104,19 @@ const saveAnswer = async(req, res) => {
     });
 };
 
+const getLeaderboard = async(req, res) => {
+    await User.find({ sessionID : req.body.sessionID }, async function (err, users) {
+        var body = {};
+        body.users = [];
+        users.forEach(function(user) {
+            body.users.push({ username: user.displayName, score: user.score });
+        })
+        res.status(200).json({
+            body
+        });
+    });
+};
+
 module.exports = {
     saySomething,
     createQuiz,
@@ -112,5 +124,6 @@ module.exports = {
     getUser,
     getQuestion,
     getAnswer,
-    saveAnswer
+    saveAnswer,
+    getLeaderboard
 };
