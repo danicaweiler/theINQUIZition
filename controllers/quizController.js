@@ -50,14 +50,13 @@ const createUser = async(req, res) => {
 }
 
 const getQuiz = async(req, res) => {
-    console.log(req.body.quizID);
-    await Quiz.findOne({ _id : req.body.quizID }), async function (err, quiz) {
+    await Quiz.findById(req.body.quizID, async function (err, quiz) {
         res.status(200).json({
             body: {
                 "title": quiz.title
             }
         });
-    };
+    });
 };
 
 
@@ -73,28 +72,37 @@ const getScore = async(req, res) => {
 
 const getQuestion = async(req, res) => {
     await Question.findOne({ quizID: req.body.quizID, questionNum: req.body.Number }, function (err, question) {
-        res.status(200).json({
-            body: {
-                "question": question.question,
-                "a": [
-                    question.A,
-                    (question.A == question.correctAnswer ? true : false)
-                ],
-                "b": [
-                    question.B,
-                    (question.B == question.correctAnswer ? true : false)
-                ],
-                "c":
-                    [
-                    question.C,
-                    (question.C == question.correctAnswer ? true : false)
-                ],
-                "d": [
-                    question.D,
-                    (question.D == question.correctAnswer ? true : false)
-                ]
-            }
-        });
+        if (question == null)
+        {
+            res.status(400).json({
+                success: false 
+            });
+        }
+        else
+        {
+            res.status(200).json({
+                body: {
+                    "question": question.question,
+                    "a": [
+                        question.A,
+                        (question.A == question.correctAnswer ? true : false)
+                    ],
+                    "b": [
+                        question.B,
+                        (question.B == question.correctAnswer ? true : false)
+                    ],
+                    "c":
+                        [
+                        question.C,
+                        (question.C == question.correctAnswer ? true : false)
+                    ],
+                    "d": [
+                        question.D,
+                        (question.D == question.correctAnswer ? true : false)
+                    ]
+                }
+            });
+        }
     });
 };
 
