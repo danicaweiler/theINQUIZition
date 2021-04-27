@@ -21,13 +21,24 @@ const createQuiz = async (req, res, next) => {
         var newQuestion = req.body.questions[i];
         var question = await Question.create({
             quizID: quiz.id,
-            questionNum: i,
+            questionNum: i + 1,
             question: newQuestion.question,
-            A: newQuestion.answerA,
-            B: newQuestion.answerB,
-            C: newQuestion.answerC,
-            D: newQuestion.answerD,
-            correctAnswer: newQuestion.correctAnswer   
+            A: [
+                newQuestion.A[0],
+                newQuestion.A[1]
+            ],
+            B: [
+                newQuestion.B[0],
+                newQuestion.B[1]
+            ],
+            C: [
+                newQuestion.C[0],
+                newQuestion.C[1]
+            ],
+            D: [
+                newQuestion.D[0],
+                newQuestion.D[1]
+            ],
         });
     }
 
