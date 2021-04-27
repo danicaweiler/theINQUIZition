@@ -26,26 +26,25 @@ const createQuiz = async (req, res, next) => {
             A: [
                 {
                     answerText: newQuestion.answerA,
-                    isCorrect: newQuestion.isCorrect
+                    isCorrect: (answerText == newQuestion.corerctAnswer ? true : false)
                 }
             ],
             B: [
                 {
                     answerText: newQuestion.answerA,
-                    isCorrect: newQuestion.isCorrect
+                    isCorrect: (answerText == newQuestion.corerctAnswer ? true : false)
                 }
             ],
             C: [
                 {
                     answerText: newQuestion.answerA,
-                    isCorrect: newQuestion.isCorrect
+                    isCorrect: (answerText == newQuestion.corerctAnswer ? true : false)
                 }
             ],
             D: [
                 {
                     answerText: newQuestion.answerA,
-                    isCorrect: newQuestion.isCorrect
-                }
+                    isCorrect: (answerText == newQuestion.corerctAnswer ? true : false)
             ] 
         });
     }
@@ -125,7 +124,7 @@ const saveAnswer = async(req, res) => {
 };
 
 const getLeaderboard = async(req, res) => {
-    await User.find({ quizID: user.quizID }, async function (err, users) {
+    await User.find({ quizID: req.body.quizID }, async function (err, users) {
         var body = {};
         body.users = [];
         users.forEach(function(user) {
