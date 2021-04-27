@@ -45,6 +45,7 @@ const createQuiz = async (req, res, next) => {
                 {
                     answerText: newQuestion.answerA,
                     isCorrect: (answerText == newQuestion.corerctAnswer ? true : false)
+                }
             ] 
         });
     }
