@@ -33,6 +33,7 @@ const api = require('./routes/routes');
 // Configure app to use route
 app.use('/api/v1/', api);
 app.use('/create-quiz', quizController.createQuiz);
+app.use('/get-score', quizController.getScore);
 app.use('/get-question', quizController.getQuestion);
 app.use('/get-answer', quizController.getAnswer);
 app.use('/save-answer', quizController.saveAnswer);

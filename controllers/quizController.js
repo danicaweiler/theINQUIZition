@@ -56,6 +56,16 @@ const getUser = async(req, res) => {
     // What is purpose of this route?
 }
 
+const getScore = async(req, res) => {
+    await User.findOne({ _id : req.body.userID }, async function (err, user) {
+        res.status(200).json({
+            body: {
+                "score": user.score
+            }
+        });
+    });
+}
+
 const getQuestion = async(req, res) => {
     await User.findOne({ sessionID : req.body.sessionID }, async function (err, user) {
         await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
@@ -122,6 +132,7 @@ module.exports = {
     createQuiz,
     createUser,
     getUser,
+    getScore,
     getQuestion,
     getAnswer,
     saveAnswer,
