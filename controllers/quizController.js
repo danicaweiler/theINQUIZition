@@ -32,21 +32,19 @@ const createQuiz = async (req, res, next) => {
     }
 
     res.status(200).json({
-        sessionID: uuidv4()
+        sessionID: quiz.id
     });
 };
 
 const createUser = async(req, res) => {
     var newUser = await User.create({
-        "quizID": "",
-        "sessionID": "", 
+        "quizID": req.quizID,
         "displayName" : req.username,
         "score": 0
     });
     res.status(201).json({
         body: {
             "userID": newUser.id,
-            "sessionID": null
         }
     });
 }
@@ -66,55 +64,49 @@ const getScore = async(req, res) => {
 }
 
 const getQuestion = async(req, res) => {
-    await User.findOne({ sessionID : req.body.sessionID }, async function (err, user) {
-        await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
-            res.status(200).json({
-                body: {
-                    "question": question.question,
-                    "answers": [
-                        question.A,
-                        question.B,
-                        question.C,
-                        question.D
-                    ]
-                }
-            });
+    await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
+        res.status(200).json({
+            body: {
+                "question": question.question,
+                "answers": [
+                    question.A,
+                    question.B,
+                    question.C,
+                    question.D
+                ]
+            }
         });
     });
 };
 
 const getAnswer = async(req, res) => {
-    await User.findOne({ sessionID: req.body.sessionID }, async function (err, user) {
-        await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
-            res.status(200).json({
-                body: {
-                    "question": question.question,
-                    "answer": question.correctAnswer
-                }
-            });
+    await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, function (err, question) {
+        res.status(200).json({
+            body: {
+                "question": question.question,
+                "answer": question.correctAnswer
+            }
         });
     });
 };
 
 const saveAnswer = async(req, res) => {
-    await User.findOne({ sessionID : req.body.sessionID }, async function (err, user) {
-        await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, async function (err, question) {
-            if (question.correctAnswer == req.body.answer)
-            {
-                user.score = user.score + req.body.score;
-                await user.save();
+    await Question.findOne({ quizID: user.quizID, questionNum: req.body.Number }, async function (err, question) {
+        if (question.correctAnswer == req.body.answer)
+        {
+            user.score = user.score + req.body.score;
+            await user.save();
+        }
+        res.status(200).json({
+            body: {
+                "score": user.score
             }
-            res.status(200).json({
-                body: {
-                    "score": user.score
-                }
-            });
         });
     });
 };
 
 const getLeaderboard = async(req, res) => {
-    await User.find({ sessionID : req.body.sessionID }, async function (err, users) {
+    await User.find({ quizID: user.quizID }, async function (err, users) {
         var body = {};
         body.users = [];
         users.forEach(function(user) {
