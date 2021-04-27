@@ -16,16 +16,15 @@ const createQuiz = async (req, res, next) => {
 
     for (var i = 0; i < req.body.questions.length; i++)
     {
-        var currQuestion = req.body.questions[i];
-        var newQuestion = await Question.create({
+        await Question.create({
             quizID: quiz.id,
             questionNum: i + 1,
-            question: currQuestion.question,
-            A: currQuestion.answerA,
-            B: currQuestion.answerB,
-            C: currQuestion.answerC,
-            D: currQuestion.answerD,
-            correctAnswer: currQuestion.correctAnswer
+            question: req.body.questions[i].question,
+            A: req.body.questions[i].answerA,
+            B: req.body.questions[i].answerB,
+            C: req.body.questions[i].answerC,
+            D: req.body.questions[i].answerD,
+            correctAnswer: req.body.questions[i].correctAnswer
         });
     }
 
@@ -126,16 +125,18 @@ const getAnswer = async(req, res) => {
 };
 
 const saveAnswer = async(req, res) => {
-    await Question.findOne({ quizID: req.body.quizID, questionNum: req.body.Number }, async function (err, question) {
-        if (question.correctAnswer == req.body.answer)
-        {
-            user.score = user.score + req.body.score;
-            await user.save();
-        }
-        res.status(200).json({
-            body: {
-                "score": user.score
+    await User.findOne({ userID: req.body.userID }, async function (err, question) {
+        await Question.findOne({ quizID: req.body.quizID, questionNum: req.body.Number }, async function (err, question) {
+            if (question.correctAnswer == req.body.answer)
+            {
+                user.score = user.score + req.body.score;
+                await user.save();
             }
+            res.status(200).json({
+                body: {
+                    "score": user.score
+                }
+            });
         });
     });
 };
