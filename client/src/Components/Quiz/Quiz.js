@@ -31,7 +31,17 @@ function Quiz(props) {
             />
           </label>
           <br />
-
+          <br />
+          <br />
+          <br />
+          <label>
+            <p>Enter your name:</p>
+          <input
+              type='text'
+              name='username'
+            />
+            <br/>
+          </label>
           <button type='button' className='main-button'>
             Let's Play!
           </button>

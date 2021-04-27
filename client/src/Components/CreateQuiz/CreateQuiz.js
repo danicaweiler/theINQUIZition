@@ -54,7 +54,6 @@ class CreateQuiz extends React.Component {
   submitForm() {
     this.validator.hideMessages();
     if (this.validator.allValid()) {
-      alert("You submitted the form and stuff!");
       const data = {
         title: this.state.title,
         questions: this.state.questions
