@@ -125,7 +125,7 @@ const getAnswer = async(req, res) => {
 };
 
 const saveAnswer = async(req, res) => {
-    await User.findById(userID, async function (err, user) {
+    await User.findById(req.body.userID, async function (err, user) {
         await Question.findOne({ quizID: req.body.quizID, questionNum: req.body.Number }, async function (err, question) {
             if (question.correctAnswer == req.body.answer)
             {
