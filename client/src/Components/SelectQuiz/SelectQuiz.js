@@ -1,5 +1,6 @@
 import React from "react";
-import { withRouter, Link } from "react-router-dom";
+
+import { Route, Redirect, withRouter, Link } from "react-router-dom";
 
 function SelectQuiz() {
   return (
@@ -27,15 +28,14 @@ function SelectQuiz() {
 
 //Columns defines table headings and properties to be placed into the body
 const columns = [{ heading: 'Select A Quiz', property: 'title' }];
-//Data is the array of objects to be placed into the table
-//Data will actully be a call to the backend
-
 const data = [{ title: 'All About Edward Scissor Hands', quizId: '1234abcd' }, { title: 'Jackson 5', quizId: '1234abcd' }]
 
 const QuizList = ({ columns, data, propertyAsKey }) => {
+
 const onPlayClick = (id) => {
   alert(`Hello, lets play the quiz by id: ${id}!`);
-};
+}
+
 return (<table className='table'>
         <thead>
             <tr>{columns.map(col => <th key={`header-${col.heading}`}>{col.heading}</th>)}</tr>
@@ -47,9 +47,12 @@ return (<table className='table'>
                     <td key={`${item[propertyAsKey]}-${col.property}`}>
                       {item[col.property]}
                     <br />
+                    <Link to= {
+                      'quiz?id=' + item.quizId
+                    }>
                     <button type='button' id={item.quizId} onClick={() => {
                         onPlayClick(item.quizId);
-                      }}>Play!</button>
+                      }}>Play!</button></Link>
                 </td>))}
               </tr>
             )}
