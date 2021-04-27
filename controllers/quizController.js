@@ -21,12 +21,13 @@ const createQuiz = async (req, res, next) => {
         var newQuestion = req.body.questions[i];
         var question = await Question.create({
             quizID: quiz.id,
-            questionNum: i,
+            questionNum: i + 1,
             question: newQuestion.question,
-            answers: {
-
-            }
-
+            A: newQuestion.answerA,
+            B: newQuestion.answerB,
+            C: newQuestion.answerC,
+            D: newQuestion.answerD,
+            correctAnswer: newQuestion.correctAnswer
         });
     }
 
@@ -67,11 +68,22 @@ const getQuestion = async(req, res) => {
         res.status(200).json({
             body: {
                 "question": question.question,
-                "answers": [
+                "a": [
                     question.A,
+                    (question.A == question.correctAnswer ? true : false)
+                ],
+                "b": [
                     question.B,
+                    (question.B == question.correctAnswer ? true : false)
+                ],
+                "c":
+                    [
                     question.C,
-                    question.D
+                    (question.C == question.correctAnswer ? true : false)
+                ],
+                "d": [
+                    question.D,
+                    (question.D == question.correctAnswer ? true : false)
                 ]
             }
         });
