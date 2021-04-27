@@ -1,4 +1,3 @@
-//const mongoose = require("../mongoose");
 const Quiz = require("../model/quiz");
 const Question = require("../model/question");
 const User = require("../model/user");
