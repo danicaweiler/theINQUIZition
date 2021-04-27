@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import { Link, withRouter, useLocation } from "react-router-dom";
-
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
+var qs = require('qs');
 
 function Quiz(props) {
-  const id = useQuery().get("id"); // props.location.search;
-  const [sessionId, setSessionId] = useState(id);
+const id = qs.parse(props.location.search, { ignoreQueryPrefix: true }).id; //props.location.search;
+const [sessionId, setSessionId] = useState(id);
 
-  console.log(id);
   return (
     <div id='quiz'>
       <div className='game-header'>
@@ -24,9 +20,13 @@ function Quiz(props) {
           <label>
             <p>Share this link with you friends!</p>
             <input
-              className='question-input'
+              className='question-input' //populate from sessionID
               type='text'
               name='share-link'
+              value= {'theinquizition.herokuapp.com/quiz?id=' + sessionId}
+              onClick={() => {
+                navigator.clipboard.writeText('theinquizition.herokuapp.com/quiz?id=' + sessionId);
+               }}
               readOnly
             />
           </label>
