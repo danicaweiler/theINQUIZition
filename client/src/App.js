@@ -14,11 +14,11 @@ function App() {
   const [response, setResponse] = useState([]);
 
   //This will get the reponse from the server when the component loads
-  useEffect(() => {
-    axios.get("/api/v1/say-something").then((res) => {
-      setResponse(res.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get("/api/v1/say-something").then((res) => {
+  //     setResponse(res.data);
+  //   });
+  // }, []);
 
   return (
     <div className='App'>

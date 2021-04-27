@@ -1,78 +1,115 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { withRouter, Link, Redirect } from "react-router-dom";
+import axios from "axios";
 
-function QuizSession() {
-  const questions = [
-    {
-      questionText: "What is the capital of Canada?",
-      answerOptions: [
-        { answerText: "Toronto", isCorrect: false },
-        { answerText: "Ottawa", isCorrect: true },
-        { answerText: "Vancouver", isCorrect: false },
-        { answerText: "Sarnia", isCorrect: false },
-      ],
-    },
-    {
-      questionText: "The iPhone was created by which company?",
-      answerOptions: [
-        { answerText: "Apple", isCorrect: true },
-        { answerText: "Intel", isCorrect: false },
-        { answerText: "Amazon", isCorrect: false },
-        { answerText: "Microsoft", isCorrect: false },
-      ],
-    },
-    {
-      questionText: "How many Harry Potter books are there?",
-      answerOptions: [
-        { answerText: "1", isCorrect: false },
-        { answerText: "4", isCorrect: false },
-        { answerText: "6", isCorrect: false },
-        { answerText: "7", isCorrect: true },
-      ],
-    },
-  ];
+var qs = require('qs');
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+function QuizSession(props) {
+  const [quizId, setQuizId] = useState(qs.parse(props.location.search, { ignoreQueryPrefix: true }).id); //props.location.search;
+  const [question, setQuestion] = useState({
+    body: {
+      question: "Loading...", a: ["Answer A", false], b: ["Answer B", true], c: ["Answer C", false], d: ["Answer D", false]
+    }
+  });
+
+  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
   const [score, setScore] = useState(0);
-  const [showScore, setShowScore] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
+
+  useEffect(() => {
+    try {
+      const res = axios.get('/api/v1/getQuestion', {
+        params: {
+          "quizID": quizId,
+          "Number": currentQuestionNumber
+        }
+      }).then((res) => {
+        setQuestion(res.data)
+        console.log(res.data);
+      });;
+    } catch (err) {
+      // Handle Error Here
+      console.error(err);
+    }
+  }, [])
+
   const handleAnswerOptionClick = (isCorrect) => {
     if (isCorrect) {
       setScore(score + 1);
     }
 
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setShowScore(true);
-    }
+    const nextQuestion = currentQuestionNumber + 1;
+    const res = axios.get('/api/v1/getQuestion', {
+      params: {
+        "quizID": quizId,
+        "Number": nextQuestion
+      }
+    }).then((res) => {
+      setQuestion(res.data)
+      if (question != null) {
+        setCurrentQuestionNumber(nextQuestion);
+      }
+    })
+      .catch((error) => {
+        setIsEnd(true);
+      })
+      .finally(() => {
+        if (isEnd == true) {
+          handleEnd();
+        }
+      });
+
   };
+
+  const handleEnd = () => {
+    <Redirect to={
+      "quiz?id=" + quizId 
+        } />
+  };
+
+
   return (
-    <div className='app'>
-      {showScore ? (
-        <div className='score-section'>
-          You scored {score} out of {questions.length}
-        </div>
-      ) : (
-        <>
-          <div className='question-section'>
-            <div className='question-count'>
-              <span>Question {currentQuestion + 1}</span>
+    <div id='quiz'>
+      <div className='game-header'>
+        <Link to='/'>
+          <h1>The InQUIZition</h1>
+        </Link>
+      </div>
+      <div className='game-body alternate' >
+        <div className='form-body'>
+          <div className='score-section'>
+            Your score is {score}
+          </div>
+          <div className='question-section answer-section'>
+            <div className="question-input main question">
+              <span>Question {currentQuestionNumber}</span>
             </div>
-            <div className='question-text'>
-              {questions[currentQuestion].questionText}
-            </div>
+            <label>
+              <p className="question-input main question">{question.body.question}</p>
+            </label>
           </div>
           <div className='answer-section'>
-            {questions[currentQuestion].answerOptions.map((answerOption) => (
-              <button
-                onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}>
-                {answerOption.answerText}
-              </button>
-            ))}
+            <button className="answer main-button"
+              onClick={() => handleAnswerOptionClick(question.body.a[1])}>
+              {question.body.a[0]}
+            </button>
+            <button className="answer main-button"
+              onClick={() => handleAnswerOptionClick(question.body.b[1])}>
+              {question.body.b[0]}
+            </button>
+            <br />
+            <button className="answer main-button"
+              onClick={() => handleAnswerOptionClick(question.body.c[1])}>
+              {question.body.c[0]}
+            </button>
+            <button className="answer main-button"
+              onClick={() => handleAnswerOptionClick(question.body.d[1])}>
+              {question.body.d[0]}
+            </button>
           </div>
-        </>
-      )}
+        </div>
+      </div>
     </div>
   );
 }
-export default QuizSession;
+export default withRouter(QuizSession);

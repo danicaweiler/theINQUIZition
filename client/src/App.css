@@ -167,10 +167,7 @@ tr:hover {
   margin: 15px;
 }
 
-.answer {
-  margin-left: 20px;
+.answer-section {
+  text-align: center;
 }
 
-.right {
-  text-align: right;
-}

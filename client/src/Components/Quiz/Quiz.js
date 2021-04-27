@@ -1,11 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, withRouter, useLocation } from "react-router-dom";
+import axios from "axios";
 var qs = require('qs');
 
 function Quiz(props) {
-const id = qs.parse(props.location.search, { ignoreQueryPrefix: true }).id; //props.location.search;
-const [sessionId, setSessionId] = useState(id);
-
+const quizId = qs.parse(props.location.search, { ignoreQueryPrefix: true }).id;
+const [leaderboard, setLeaderboard] = useState([]);
+const [title, setTitle] = useState("");
+//Leaderboard
+useEffect(() => {
+  (async () => {
+    await axios.get('/api/v1/get-leaderboard', {
+      params: {
+        quizID: quizId
+      }
+    }).then((res) => {
+       setLeaderboard(res.data.body)
+      });
+  })()
+}, [])
+//Title
+useEffect(() => {
+  (async () => {
+    await axios.get('/api/v1/get-quiz', {
+      params: {
+        quizID: quizId
+      }
+    }).then((res) => {
+      console.log(res)
+       setTitle(res.data.body.title)
+      });
+  })()
+}, [])
   return (
     <div id='quiz'>
       <div className='game-header'>
@@ -15,17 +41,17 @@ const [sessionId, setSessionId] = useState(id);
       </div>
       <div className='game-body alternate'>
         <div className='form-body alternate'>
-          <h1 className='alternate'>Custom Title Here</h1>
+          <h1 className='alternate'>{title}</h1>
           <br />
           <label>
             <p>Share this link with you friends!</p>
             <input
-              className='question-input' //populate from sessionID
+              className='question-input' //populate from quizId
               type='text'
               name='share-link'
-              value= {'theinquizition.herokuapp.com/quiz?id=' + sessionId}
+              value= {'theinquizition.herokuapp.com/quiz?id=' + quizId}
               onClick={() => {
-                navigator.clipboard.writeText('theinquizition.herokuapp.com/quiz?id=' + sessionId);
+                navigator.clipboard.writeText('theinquizition.herokuapp.com/quiz?id=' + quizId);
                }}
               readOnly
             />
@@ -42,9 +68,21 @@ const [sessionId, setSessionId] = useState(id);
             />
             <br/>
           </label>
-          <button type='button' className='main-button'>
+          <Link to= {
+                      '/quiz_session?id=' + quizId
+                    }>  
+          <button type='button' className='main-button' onClick={() => 
+          {      
+            const data = {
+              displayName: "Get from the textbox",
+              quizId: quizId
+            };
+            axios.post("/api/v1/createUser", data).then((res) => {
+              localStorage.setItem('user', res.data);
+            });
+        }}>
             Let's Play!
-          </button>
+          </button></Link>
           <br />
           <br />
           <br />
@@ -52,7 +90,9 @@ const [sessionId, setSessionId] = useState(id);
           <h1 className='alternate'>Leaderboard</h1>
           <Leaderboard
             columns={columns}
-            data={data}
+            data={
+               leaderboard.length > 0? leaderboard : [ {username: "", score: 0} ]
+            }
             propertyAsKey='username' //The data property to be used as a key
           />
         </div>
@@ -65,11 +105,6 @@ const [sessionId, setSessionId] = useState(id);
 const columns = [
   { heading: "Username", property: "username" },
   { heading: "Score", property: "score" },
-];
-//Data is the array of objects to be placed into the table
-const data = [
-  { username: "Sabrina", score: "60" },
-  { username: "Max", score: "2" },
 ];
 
 const Leaderboard = ({ columns, data, propertyAsKey }) => (

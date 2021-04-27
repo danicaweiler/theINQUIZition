@@ -2,6 +2,11 @@ const Quiz = require("../model/quiz");
 const Question = require("../model/question");
 const User = require("../model/user");
 
+const querystring = require('querystring');
+
+const { v4: uuidv4 } = require("uuid");
+const { get } = require("../routes/routes");
+
 const saySomething = (req, res, next) => {
     res.status(200).json({
         body: 'Hello from the server!'
@@ -58,6 +63,7 @@ const getQuiz = async(req, res) => {
 
 const getAllQuizzes = async(req, res) => {
     await Quiz.find({}, { title: 1}, function (err, quizzes) {
+        console.log(quizzes)
         res.status(200).json({
             body: {
                 quizzes
@@ -78,38 +84,42 @@ const getScore = async(req, res) => {
 };
 
 const getQuestion = async(req, res) => {
+    console.log("NUMBER: " + req.query.Number); 
+
+    console.log("ID: " + req.query.quizID); 
     await Question.findOne({ quizID: req.query.quizID, questionNum: req.query.Number }, function (err, question) {
+
         if (question == null)
         {
             res.status(400).json({
-                success: false 
+                success: false
             });
         }
-        else
-        {
-            res.status(200).json({
-                body: {
-                    "question": question.question,
-                    "a": [
-                        question.A,
-                        (question.correctAnswer == "A" ? true : false)
-                    ],
-                    "b": [
-                        question.B,
-                        (question.correctAnswer == "B" ? true : false)
-                    ],
-                    "c":
-                        [
-                        question.C,
-                        (question.correctAnswer = "C" ? true : false)
-                    ],
-                    "d": [
-                        question.D,
-                        (question.correctAnswer = "D"? true : false)
-                    ]
-                }
-            });
-        }
+        else {
+        res.status(200).json({
+            body: {
+                "question": question.question,
+                "a": [
+                    question.A,
+                    (question.A === question.correctAnswer ? true : false)
+                ],
+                "b": [
+                    question.B,
+                    (question.B === question.correctAnswer ? true : false)
+                ],
+                "c":
+                    [
+                    question.C,
+                    (question.C === question.correctAnswer ? true : false)
+                ],
+                "d": [
+                    question.D,
+                    (question.D === question.correctAnswer ? true : false)
+                ]
+            }
+        
+        });
+    }
     });
 };
 
