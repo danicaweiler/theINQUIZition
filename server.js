@@ -57,42 +57,6 @@ db.once("open", function() {
 // Configure our server to listen on the port defiend by our port variable
 app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));
 
-app.get("/trivia/getQuestion", (req, res) => {
-    
-});
-
-app.get("/trivia/getAnswer", (req, res) => {
-
-});
-
-app.post("/trivia/user/saveAnswer", (req, res) => {
-
-});
-
-app.post("/user/create", async (req, res) => {
-    var newUser = new User(req.body);
-    var result = await newUser.save();
-    res.send(result);
-});
-
-app.get("/user", (req, res) => {
-    res.status(200).json({
-        user: 'user'
-    });
-});
-
-app.get("/user/score", (req, res) => {
-
-});
-
-app.get("/session/leaderboard", (req, res) => {
-
-});
-
-app.post("/user/score", (req, res) => {
-
-});
-
 // Catch any bad requests
 // MUST BE AT END OF FILE
 app.get('*', (req, res) => {

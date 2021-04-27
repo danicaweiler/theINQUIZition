@@ -23,30 +23,10 @@ const createQuiz = async (req, res, next) => {
             quizID: quiz.id,
             questionNum: i,
             question: newQuestion.question,
-            A: [
-                {
-                    answerText: newQuestion.answerA,
-                    isCorrect: (answerText == newQuestion.corerctAnswer ? true : false)
-                }
-            ],
-            B: [
-                {
-                    answerText: newQuestion.answerA,
-                    isCorrect: (answerText == newQuestion.corerctAnswer ? true : false)
-                }
-            ],
-            C: [
-                {
-                    answerText: newQuestion.answerA,
-                    isCorrect: (answerText == newQuestion.corerctAnswer ? true : false)
-                }
-            ],
-            D: [
-                {
-                    answerText: newQuestion.answerA,
-                    isCorrect: (answerText == newQuestion.corerctAnswer ? true : false)
-                }
-            ] 
+            answers: {
+
+            }
+
         });
     }
 
