@@ -123,7 +123,8 @@ const Leaderboard = ({ columns, data, propertyAsKey }) => (
       </tr>
     </thead>
     <tbody>
-      {data.map((item) => (
+   
+      {data.sort((a,b) => a.score < b.score ? 1 : -1).map((item) => (
         <tr key={`${item[propertyAsKey]}-row`}>
           {columns.map((col) => (
             <td key={`${item[propertyAsKey]}-${col.property}`}>
