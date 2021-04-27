@@ -38,8 +38,8 @@ const createQuiz = async (req, res, next) => {
 
 const createUser = async(req, res) => {
     var newUser = await User.create({
-        "quizID": req.quizID,
-        "displayName" : req.username,
+        "quizID": req.body.quizID,
+        "displayName" : req.body.username,
         "score": 0
     });
     res.status(201).json({
@@ -50,7 +50,7 @@ const createUser = async(req, res) => {
 }
 
 const getQuiz = async(req, res) => {
-    await Quiz.findById(req.body.quizID, function (err, quiz) {
+    await Quiz.findById(req.query.quizID, function (err, quiz) {
         res.status(200).json({
             body: {
                 "title": quiz.title
@@ -61,7 +61,7 @@ const getQuiz = async(req, res) => {
 
 
 const getScore = async(req, res) => {
-    await User.findOne({ _id : req.body.userID }, function (err, user) {
+    await User.ById(req.query.userID, function (err, user) {
         res.status(200).json({
             body: {
                 "score": user.score
@@ -107,7 +107,7 @@ const getQuestion = async(req, res) => {
 };
 
 const getAnswer = async(req, res) => {
-    await Question.findOne({ quizID: req.body.quizID, questionNum: req.body.Number }, function (err, question) {
+    await Question.findOne({ quizID: req.query.quizID, questionNum: req.query.Number }, function (err, question) {
         res.status(200).json({
             body: {
                 "question": question.question,
