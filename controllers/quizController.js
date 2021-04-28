@@ -72,38 +72,41 @@ const getScore = async(req, res) => {
 };
 
 const getQuestion = async(req, res) => {
+
     await Question.findOne({ quizID: req.query.quizID, questionNum: req.query.Number }, function (err, question) {
+
         if (question == null)
         {
-            res.status(400).json({
-                success: false 
-            });
-        }
-        else
-        {
             res.status(200).json({
-                body: {
-                    "question": question.question,
-                    "a": [
-                        question.A,
-                        (question.correctAnswer == "A" ? true : false)
-                    ],
-                    "b": [
-                        question.B,
-                        (question.correctAnswer == "B" ? true : false)
-                    ],
-                    "c":
-                        [
-                        question.C,
-                        (question.correctAnswer = "C" ? true : false)
-                    ],
-                    "d": [
-                        question.D,
-                        (question.correctAnswer = "D"? true : false)
-                    ]
-                }
+                success: true,
+                body: "end"
             });
         }
+        else {
+        res.status(200).json({
+            body: {
+                "question": question.question,
+                "a": [
+                    question.A,
+                    (question.A === question.correctAnswer ? true : false)
+                ],
+                "b": [
+                    question.B,
+                    (question.B === question.correctAnswer ? true : false)
+                ],
+                "c":
+                    [
+                    question.C,
+                    (question.C === question.correctAnswer ? true : false)
+                ],
+                "d": [
+                    question.D,
+                    (question.D === question.correctAnswer ? true : false)
+                ]
+            }
+        
+        });
+    }
     });
 };
 
@@ -125,7 +128,7 @@ const saveAnswer = async(req, res) => {
             {
                 user.score = user.score + req.body.score;
                 await user.save();
-            }
+            };
             res.status(200).json({
                 body: {
                     "score": user.score
@@ -136,7 +139,7 @@ const saveAnswer = async(req, res) => {
 };
 
 const getLeaderboard = async(req, res) => {
-    await User.find({ quizID: req.body.quizID }, async function (err, users) {
+    await User.find({ quizID: req.query.quizID }, async function (err, users) {
         var body = {};
         body.users = [];
         users.forEach(function(user) {

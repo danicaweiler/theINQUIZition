@@ -1,8 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 
-import "./confetti.css";
-
 function MainPage(props) {
   //set the amount of confetti
   const numConfetti = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
@@ -33,7 +31,6 @@ function MainPage(props) {
         <h1 className='alternate'>How it Works</h1><ul>
         <li>Build your own quiz, or use one we have made </li>
         <li> Get a shareable link to send to your friends </li>
-        <li>The faster you answer right, the more points you get </li>
         <li>
           Watch the leaderboard change as you and your friends compete for the
           highest score

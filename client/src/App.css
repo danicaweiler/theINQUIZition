@@ -165,12 +165,10 @@ tr:hover {
 
 .question {
   margin: 15px;
+  font-size: x-large;
 }
 
-.answer {
-  margin-left: 20px;
+.answer-section {
+  text-align: center;
 }
 
-.right {
-  text-align: right;
-}

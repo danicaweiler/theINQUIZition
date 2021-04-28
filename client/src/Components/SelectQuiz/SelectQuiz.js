@@ -1,63 +1,66 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
-import { Route, Redirect, withRouter, Link } from "react-router-dom";
-
-function SelectQuiz() {
-  return (
-  <div id='selectQuiz'>
-    <div className='game-header'>
-      <Link to='/'>
-        <h1>The InQUIZition</h1>
-      </Link>
-    </div>
-    <div className='game-body alternate'>
-      <form className='form-body'>
-        <h1 className="alternate">Select A Quiz</h1>
-        <div className='form-group'>
-        <QuizList
-          columns={columns}
-          data={data}
-          propertyAsKey='quizId' //The data property to be used as a key
-        />
-        </div>
-      </form>
-    </div>
-  </div>
-  );
-}
 
 //Columns defines table headings and properties to be placed into the body
 const columns = [{ heading: 'Select A Quiz', property: 'title' }];
-const data = [{ title: 'All About Edward Scissor Hands', quizId: '1234abcd' }, { title: 'Jackson 5', quizId: '1234abcd' }]
 
-const QuizList = ({ columns, data, propertyAsKey }) => {
+function SelectQuiz() {
+  const [data, setData] = useState( [{ title: 'Loading...', quizId: 'abcd' }]);
+  
+  useEffect(() => {
+    (async () => {
+      await axios.get('/api/v1/get-all-quizzes').then((res) => {
+         setData(res.data.body.quizzes)
+        });
+    })()
+  }, [])
 
-const onPlayClick = (id) => {
-  alert(`Hello, lets play the quiz by id: ${id}!`);
+  return (
+    <div id='selectQuiz'>
+      <div className='game-header'>
+        <Link to='/'>
+          <h1>The InQUIZition</h1>
+        </Link>
+      </div>
+      <div className='game-body alternate'>
+        <form className='form-body'>
+          <h1 className="alternate">Select A Quiz</h1>
+          <div className='form-group'>
+            <QuizList
+              columns={columns}
+              data={data}
+              propertyAsKey='quizId' //The data property to be used as a key
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
-return (<table className='table'>
-        <thead>
-            <tr>{columns.map(col => <th key={`header-${col.heading}`}>{col.heading}</th>)}</tr>
-        </thead>
-        <tbody>
-            {data.map(item =>
-                <tr key={`${item[propertyAsKey]}-row`}>
-                    {columns.map((col) => (
-                    <td key={`${item[propertyAsKey]}-${col.property}`}>
-                      {item[col.property]}
-                    <br />
-                    <Link to= {
-                      'quiz?id=' + item.quizId
-                    }>
-                    <button type='button' id={item.quizId} onClick={() => {
-                        onPlayClick(item.quizId);
-                      }}>Play!</button></Link>
-                </td>))}
-              </tr>
-            )}
-        </tbody>
-    </table>);
+const QuizList = ({ columns, data, propertyAsKey }) => {
+  return (<table className='table'>
+    <thead>
+      <tr>{columns.map(col => <th key={`header-${col.heading}`}>{col.heading}</th>)}</tr>
+    </thead>
+    <tbody>
+      {data.map(item =>
+        <tr key={`${item[propertyAsKey]}-row`}>
+          {columns.map((col) => (
+            <td key={`${item[propertyAsKey]}-${col.property}`}>
+              {item[col.property]}
+              <br />
+              <Link to={
+                'quiz?id=' + item._id
+              }>
+                <button type='button' id={item._id}>Play!</button></Link>
+            </td>))}
+        </tr>
+      )}
+    </tbody>
+  </table>);
 };
 
 export default SelectQuiz;

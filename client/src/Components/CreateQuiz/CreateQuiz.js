@@ -58,14 +58,20 @@ class CreateQuiz extends React.Component {
         title: this.state.title,
         questions: this.state.questions
       };
-      axios.post("/api/v1/create-quiz", data).then((res) => {
-         this.state.sessionId = res.data;
-      });
-      this.props.history.push({
-        pathname: '/quiz',
-        search:'id=' + this.state.sessionId
-      })
-      this.props.history.push("/quiz?id=" + this.state.sessionId);
+
+      (async () => {
+        await axios.post('/api/v1/create-quiz', data
+        ).then((res) => {
+           this.setState({ sessionId: res.data.sessionID })
+
+           this.props.history.push({
+            pathname: '/quiz',
+            search:'id=' + this.state.sessionId
+          })
+          this.props.history.push("/quiz?id=" + this.state.sessionId);
+          });
+      })()
+    
     } else {
       this.validator.showMessages();
       this.forceUpdate();
