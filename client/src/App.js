@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import MainPage from "./Components/MainPage/MainPage";
 import CreateQuiz from "./Components/CreateQuiz/CreateQuiz";

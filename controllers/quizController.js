@@ -77,8 +77,9 @@ const getQuestion = async(req, res) => {
 
         if (question == null)
         {
-            res.status(400).json({
-                success: false
+            res.status(200).json({
+                success: true,
+                body: "end"
             });
         }
         else {

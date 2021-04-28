@@ -31,7 +31,6 @@ function MainPage(props) {
         <h1 className='alternate'>How it Works</h1><ul>
         <li>Build your own quiz, or use one we have made </li>
         <li> Get a shareable link to send to your friends </li>
-        <li>The faster you answer right, the more points you get </li>
         <li>
           Watch the leaderboard change as you and your friends compete for the
           highest score
